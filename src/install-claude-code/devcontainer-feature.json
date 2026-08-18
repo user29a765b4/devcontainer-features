@@ -1,7 +1,7 @@
 {
     "name": "Claude Code CLI",
     "id": "install-claude-code",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Installs the Claude Code CLI globally",
     "options": {},
     "documentationURL": "https://github.com/user29a765b4/devcontainer-features/tree/main/src/install-claude-code",
@@ -14,12 +14,12 @@
         }
     },
     "containerEnv": {
-        "CLAUDE_CONFIG_DIR": "/home/${containerEnv:USER}/.claude"
+        "CLAUDE_CONFIG_DIR": "/mnt/.claude"
     },
     "mounts": [
         {
-            "source": "${localWorkspaceFolderBasename}-claude-code-${devcontainerId}",
-            "target": "/home/${containerEnv:USER}/.claude",
+            "source": "claude-code-${devcontainerId}",
+            "target": "/mnt/.claude",
             "type": "volume"
         }
     ]

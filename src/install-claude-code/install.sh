@@ -91,9 +91,10 @@ install_nodejs() {
 install_claude_code() {
     echo "Installing Claude Code CLI..."
     # npm install -g @anthropic-ai/claude-code
-    
-    mkdir -p "$_REMOTE_USER_HOME/.claude"
-    chown -R "$_REMOTE_USER:$_REMOTE_USER" "$_REMOTE_USER_HOME/.claude"
+
+    mkdir -p /mnt/.claude
+    chown -R "$_REMOTE_USER:$_REMOTE_USER" /mnt/.claude
+    ln -sfn /mnt/.claude "$_REMOTE_USER_HOME/.claude"
 
     # Skip installation if Claude Code already exists.
     if su - "${_REMOTE_USER}" -c 'command -v claude >/dev/null'; then

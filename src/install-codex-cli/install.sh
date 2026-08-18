@@ -5,6 +5,10 @@ set -eu
 install_codex_cli() {
     echo "Installing Codex CLI..."
 
+    mkdir -p /mnt/.codex
+    chown -R "$_REMOTE_USER:$_REMOTE_USER" /mnt/.codex
+    ln -sfn /mnt/.codex "$_REMOTE_USER_HOME/.codex"
+
     # Place the configuration file in the non-root user's home directory.
     if [ "${_REMOTE_USER}" != "root" ]; then
         su - "${_REMOTE_USER}" <<'EOF'
