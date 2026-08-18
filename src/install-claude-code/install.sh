@@ -91,6 +91,14 @@ install_nodejs() {
 install_claude_code() {
     echo "Installing Claude Code CLI..."
     # npm install -g @anthropic-ai/claude-code
+    
+    mkdir -p "$_REMOTE_USER_HOME/.claude"
+    chown -R "$_REMOTE_USER:$_REMOTE_USER" "$_REMOTE_USER_HOME/.claude"
+
+    # Skip installation if Claude Code already exists.
+    if su - "${_REMOTE_USER}" -c 'command -v claude >/dev/null'; then
+        echo "Claude Code is already installed."
+        return 0
 
     # Place the configuration file in the non-root user's home directory.
     if [ "${_REMOTE_USER}" != "root" ]; then
@@ -101,14 +109,15 @@ install_claude_code() {
         echo 'export PATH="$HOME/.local/bin:$PATH"' >>  ~/.zshrc
         export PATH="$HOME/.local/bin:$PATH"
 EOF
-    fi
-
-    if su - "${_REMOTE_USER}" -c 'command -v claude >/dev/null'; then
-        echo "Claude Code CLI installed successfully!"
-        claude --version
-        return 0
+        if su - "${_REMOTE_USER}" -c 'command -v claude >/dev/null'; then
+            echo "Claude Code CLI installed successfully!"
+            return 0
+        else
+            echo "ERROR: Claude Code CLI installation failed!"
+            return 1
+        fi
     else
-        echo "ERROR: Claude Code CLI installation failed!"
+        echo "ERROR: \$_REMOTE_USER is root!"
         return 1
     fi
 }
@@ -134,8 +143,8 @@ main() {
     echo "Activating feature 'claude-code'"
 
     # Detect package manager
-    PKG_MANAGER=$(detect_package_manager)
-    echo "Detected package manager: $PKG_MANAGER"
+    # PKG_MANAGER=$(detect_package_manager)
+    # echo "Detected package manager: $PKG_MANAGER"
 
     # Try to install Node.js if it's not available
     # if ! command -v node >/dev/null || ! command -v npm >/dev/null; then
