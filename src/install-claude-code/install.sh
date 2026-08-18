@@ -100,6 +100,7 @@ install_claude_code() {
     if su - "${_REMOTE_USER}" -c 'command -v claude >/dev/null'; then
         echo "Claude Code is already installed."
         return 0
+    fi
 
     # Place the configuration file in the non-root user's home directory.
     if [ "${_REMOTE_USER}" != "root" ]; then

@@ -1,7 +1,7 @@
 {
     "name": "Codex CLI",
     "id": "install-codex-cli",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Installs the Codex CLI globally",
     "options": {},
     "documentationURL": "https://github.com/user29a765b4/devcontainer-features/tree/main/src/install-codex-cli",

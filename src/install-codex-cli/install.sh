@@ -9,6 +9,12 @@ install_codex_cli() {
     chown -R "$_REMOTE_USER:$_REMOTE_USER" /mnt/.codex
     ln -sfn /mnt/.codex "$_REMOTE_USER_HOME/.codex"
 
+    # Skip installation if Codex already exists.
+    if su - "${_REMOTE_USER}" -c 'command -v codex >/dev/null'; then
+        echo "Codex is already installed."
+        return 0
+    fi
+
     # Place the configuration file in the non-root user's home directory.
     if [ "${_REMOTE_USER}" != "root" ]; then
         su - "${_REMOTE_USER}" <<'EOF'
